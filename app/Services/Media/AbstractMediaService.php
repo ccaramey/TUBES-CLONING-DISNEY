@@ -3,11 +3,11 @@
 namespace App\Services\Media;
 
 use App\Contracts\MediaProviderInterface;
+use App\Contracts\PlayableInterface;
 use App\Models\Content;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Collection;
 
-abstract class AbstractMediaService implements MediaProviderInterface
+abstract class AbstractMediaService implements MediaProviderInterface, PlayableInterface
 {
     protected string $baseUrl = '';
 

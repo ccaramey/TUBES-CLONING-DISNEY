@@ -18,14 +18,18 @@ class SeriesContentService extends AbstractMediaService
 
     public function calculateDurationLabel(): string
     {
-        $seasons = $this->payload['total_seasons'] ?? 0;
-        $episodes = $this->payload['total_episodes'] ?? 0;
+        $seasons = (int) ($this->payload['total_seasons'] ?? 0);
+        $episodes = (int) ($this->payload['total_episodes'] ?? 0);
 
         if ($seasons <= 0) {
             return 'Season information unavailable';
         }
 
-        return "{$seasons} Seasons • {$episodes} Episodes";
+        $seasonText = $seasons > 1 ? "{$seasons} Seasons" : "{$seasons} Season";
+
+        return $episodes > 0
+            ? "{$seasonText} • {$episodes} Episodes"
+            : $seasonText;
     }
 
     public function getSeriesMetadata(Content $content): array
