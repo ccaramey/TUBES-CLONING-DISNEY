@@ -284,18 +284,35 @@
                 <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6">
                     <template x-for="brand in homeData.brands" :key="brand.id">
                         <button x-on:click="filterByBrand(brand)"
+                                x-on:mouseenter="const v = $el.querySelector('video'); if (v) { v.muted = true; v.play().catch(() => {}); }"
                                 class="disney-card group relative aspect-video rounded-xl overflow-hidden bg-gradient-to-b from-[#30323e] to-[#1e1f2a] flex items-center justify-center p-5 focus:outline-none">
-                            <!-- Logo Brand Putih Bersih (z-10) -->
-                            <img x-bind:src="brand.logo_url" x-bind:alt="brand.name"
-                                 class="relative z-10 w-3/4 max-h-14 md:max-h-16 object-contain brightness-0 invert pointer-events-none drop-shadow-[0_4px_10px_rgba(0,0,0,0.6)]">
 
-                            <!-- Video Animasi Latar Belakang saat Hover (z-0) -->
-                            <template x-if="brand.hover_video_url">
-                                <video autoplay loop muted playsinline
-                                       class="absolute inset-0 z-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                    <source x-bind:src="brand.hover_video_url" type="video/mp4">
-                                </video>
-                            </template>
+                            <!-- Efek Cahaya Warna Khas Studio saat Hover -->
+                            <div x-bind:class="{
+                                    'from-blue-600/50 via-indigo-900/40 to-[#090b13]': brand.slug === 'disney',
+                                    'from-cyan-500/50 via-sky-900/40 to-[#090b13]': brand.slug === 'pixar',
+                                    'from-red-600/60 via-rose-950/50 to-[#090b13]': brand.slug === 'marvel',
+                                    'from-slate-400/40 via-blue-950/60 to-[#090b13]': brand.slug === 'star-wars',
+                                    'from-amber-500/50 via-yellow-900/40 to-[#090b13]': brand.slug === 'national-geographic'
+                                 }"
+                                 class="absolute inset-0 z-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+                            <!-- Logo Brand Putih Bersih (z-20) -->
+                            <img x-bind:src="brand.logo_url" x-bind:alt="brand.name"
+                                 class="relative z-20 w-3/4 max-h-14 md:max-h-16 object-contain brightness-0 invert pointer-events-none drop-shadow-[0_4px_12px_rgba(0,0,0,0.85)]">
+
+                            <!-- Video Animasi Latar Belakang saat Hover (z-10) -->
+                            <video x-show="brand.hover_video_url"
+                                   x-bind:src="brand.hover_video_url"
+                                   x-bind:class="{
+                                       'hue-rotate-180': brand.slug === 'disney',
+                                       'hue-rotate-150 brightness-110': brand.slug === 'pixar',
+                                       'hue-rotate-[320deg] saturate-200': brand.slug === 'marvel',
+                                       'grayscale contrast-125': brand.slug === 'star-wars',
+                                       'sepia saturate-150': brand.slug === 'national-geographic'
+                                   }"
+                                   autoplay loop muted playsinline preload="auto"
+                                   class="absolute inset-0 z-10 w-full h-full object-cover opacity-0 group-hover:opacity-80 mix-blend-screen transition-opacity duration-300"></video>
                         </button>
                     </template>
                 </div>
